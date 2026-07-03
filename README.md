@@ -1,4 +1,4 @@
-# App de Testemunhos
+# App de Testemunhos app-testimon
 
 Sistema completo para coletar depoimentos de clientes, aprová-los antes de publicar, e exibi-los em **qualquer site** através de um widget.
 
