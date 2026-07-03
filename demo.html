@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exemplo: widget em outro site</title>
+<style>
+  body{ font-family: sans-serif; max-width:900px; margin:60px auto; padding:0 20px; color:#1D2B36; }
+  h1{ font-size:22px; }
+  p.hint{ opacity:.6; font-size:14px; }
+</style>
+</head>
+<body>
+
+<h1>Exemplo de site — "Nossa loja"</h1>
+<p class="hint">Esta página simula um site qualquer que incorporou o widget de depoimentos abaixo.</p>
+
+<hr>
+
+<h2>O que nossos clientes dizem</h2>
+
+<!--
+  É só isto que precisa ser colado em qualquer site (grid):
+-->
+<div id="meus-testemunhos"
+     data-supabase-url="COLE_AQUI_A_URL_DO_SEU_PROJETO"
+     data-supabase-key="COLE_AQUI_A_CHAVE_ANON_PUBLIC"
+     data-limit="6"
+     data-layout="grid"></div>
+
+<script src="widget.js"></script>
+
+</body>
+</html>

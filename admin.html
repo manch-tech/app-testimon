@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de aprovação — Testemunhos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1D2B36;
+    --paper:#FBF7EC;
+    --teal:#1B4B43;
+    --mustard:#E8A33D;
+    --coral:#E6604F;
+    --line: rgba(29,43,54,0.14);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background: var(--paper);
+    font-family:'Work Sans', sans-serif;
+    color: var(--ink);
+    min-height:100vh;
+  }
+  header{
+    background: var(--teal);
+    color: var(--paper);
+    padding:28px 24px;
+  }
+  header h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:24px;
+    margin:0;
+  }
+  header p{ margin:4px 0 0; opacity:.75; font-size:13px; }
+  main{ max-width:820px; margin:0 auto; padding:28px 20px 80px; }
+
+  /* Login */
+  #loginBox{
+    max-width:360px;
+    margin:60px auto;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:28px;
+  }
+  #loginBox h2{ font-family:'Fraunces',serif; font-size:20px; margin:0 0 18px; }
+  #loginBox input{
+    width:100%; padding:11px 12px; margin-bottom:12px;
+    border:1px solid var(--line); border-radius:6px; font-size:15px;
+  }
+  #loginBox button{
+    width:100%; padding:11px; border:none; border-radius:6px;
+    background: var(--teal); color:#fff; font-weight:600; cursor:pointer;
+  }
+  #loginErr{ color: var(--coral); font-size:13px; margin-top:8px; display:none; }
+
+  /* Tabs */
+  .tabs{ display:flex; gap:8px; margin-bottom:20px; }
+  .tabs button{
+    background:none; border:1px solid var(--line); padding:8px 16px;
+    border-radius:999px; font-size:13px; font-weight:600; cursor:pointer;
+    color: var(--ink); opacity:.6;
+  }
+  .tabs button.active{ background:var(--teal); color:#fff; border-color:var(--teal); opacity:1; }
+
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:10px;
+    padding:20px; margin-bottom:14px;
+  }
+  .card .top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .card .name{ font-weight:600; font-size:15px; }
+  .card .role{ font-size:12px; opacity:.6; }
+  .card .stars{ color: var(--mustard); font-size:14px; white-space:nowrap; }
+  .card .msg{ font-family:'Fraunces',serif; font-size:16px; line-height:1.5; margin:12px 0; }
+  .card .actions{ display:flex; gap:8px; margin-top:10px; }
+  .card .actions button{
+    border:none; padding:8px 16px; border-radius:6px; font-size:13px;
+    font-weight:600; cursor:pointer;
+  }
+  .approve{ background: var(--teal); color:#fff; }
+  .reject{ background:#f1ece0; color:var(--ink); }
+  .unpublish{ background:#f1ece0; color:var(--ink); }
+  .empty{ opacity:.5; font-size:14px; text-align:center; padding:40px 0; }
+  #logoutBtn{
+    background:none; border:1px solid rgba(255,255,255,0.4); color:#fff;
+    padding:6px 14px; border-radius:999px; font-size:12px; cursor:pointer; float:right;
+  }
+</style>
+</head>
+<body>
+
+<div id="loginBox">
+  <h2>Entrar no painel</h2>
+  <input type="email" id="email" placeholder="E-mail do administrador">
+  <input type="password" id="password" placeholder="Senha">
+  <button id="loginBtn">Entrar</button>
+  <p id="loginErr">E-mail ou senha incorretos.</p>
+</div>
+
+<div id="app" style="display:none">
+  <header>
+    <button id="logoutBtn">Sair</button>
+    <h1>Painel de depoimentos</h1>
+    <p>Revise antes de publicar no widget</p>
+  </header>
+  <main>
+    <div class="tabs">
+      <button class="active" data-tab="pending">Pendentes</button>
+      <button data-tab="approved">Aprovados</button>
+    </div>
+    <div id="list"></div>
+  </main>
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  let currentTab = 'pending';
+
+  const loginBox = document.getElementById('loginBox');
+  const app = document.getElementById('app');
+  const loginErr = document.getElementById('loginErr');
+
+  async function checkSession() {
+    const { data } = await client.auth.getSession();
+    if (data.session) {
+      loginBox.style.display = 'none';
+      app.style.display = 'block';
+      loadList();
+    } else {
+      loginBox.style.display = 'block';
+      app.style.display = 'none';
+    }
+  }
+
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const { error } = await client.auth.signInWithPassword({ email, password });
+    if (error) {
+      loginErr.style.display = 'block';
+      return;
+    }
+    loginErr.style.display = 'none';
+    checkSession();
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await client.auth.signOut();
+    checkSession();
+  });
+
+  document.querySelectorAll('.tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTab = btn.dataset.tab;
+      loadList();
+    });
+  });
+
+  function starString(n){
+    if(!n) return '';
+    return '★'.repeat(n) + '☆'.repeat(5-n);
+  }
+
+  async function loadList() {
+    const list = document.getElementById('list');
+    list.innerHTML = '<p class="empty">Carregando...</p>';
+
+    const { data, error } = await client
+      .from('testimonials')
+      .select('*')
+      .eq('approved', currentTab === 'approved')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      list.innerHTML = '<p class="empty">Erro ao carregar.</p>';
+      console.error(error);
+      return;
+    }
+
+    if (!data.length) {
+      list.innerHTML = `<p class="empty">Nenhum depoimento ${currentTab === 'approved' ? 'aprovado' : 'pendente'} no momento.</p>`;
+      return;
+    }
+
+    list.innerHTML = data.map(t => `
+      <div class="card" data-id="${t.id}">
+        <div class="top">
+          <div>
+            <div class="name">${escapeHtml(t.name)}</div>
+            ${t.role_company ? `<div class="role">${escapeHtml(t.role_company)}</div>` : ''}
+          </div>
+          <div class="stars">${starString(t.rating)}</div>
+        </div>
+        <div class="msg">"${escapeHtml(t.message)}"</div>
+        <div class="actions">
+          ${currentTab === 'pending'
+            ? `<button class="approve" data-action="approve">Aprovar</button>
+               <button class="reject" data-action="reject">Excluir</button>`
+            : `<button class="unpublish" data-action="unpublish">Remover do site</button>`
+          }
+        </div>
+      </div>
+    `).join('');
+
+    list.querySelectorAll('button[data-action]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.closest('.card').dataset.id;
+        const action = btn.dataset.action;
+        if (action === 'approve') {
+          await client.from('testimonials').update({ approved: true }).eq('id', id);
+        } else if (action === 'reject') {
+          await client.from('testimonials').delete().eq('id', id);
+        } else if (action === 'unpublish') {
+          await client.from('testimonials').update({ approved: false }).eq('id', id);
+        }
+        loadList();
+      });
+    });
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  checkSession();
+</script>
+
+</body>
+</html>
