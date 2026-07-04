@@ -240,7 +240,8 @@ textarea{resize:vertical; min-height:110px}
             <label for="loginInput">Email ou celular</label>
             <input id="loginInput" class="auth-input" type="text" placeholder="Email ou celular com DDD" autocomplete="username" inputmode="email">
           </div>
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAADvSE46KkJDdYlBr" data-callback="onTurnstileSuccess"></div>
+          < --! MUdar a chave do turnstile captch do cloud-- >
+    
           <button id="sendCodeBtn" class="button" disabled>Enviar código</button>
 
           <div id="otpSection" class="hidden">
@@ -379,10 +380,7 @@ textarea{resize:vertical; min-height:110px}
       if(val.includes('@')){
         authType = 'email';
         authContact = val.toLowerCase();
-        const { error } = await client.auth.signInWithOtp({
-          email: authContact,
-          options: { captchaToken: turnstileToken }
-        });
+        const { error } = await client.auth.signInWithOtp({ email: contact });
         if(error) throw error;
       } else {
         const phone = formatPhoneBR(val);
