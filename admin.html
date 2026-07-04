@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Admin - Depoimentos</title>
+<script src="./config.js?v=6"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#070707;color:#ddd;font-family:system-ui}
+.wrap{max-width:900px;margin:30px auto;padding:0 16px}
+.card{background:#111;border:1px solid #222;border-radius:12px;padding:18px;margin-bottom:16px}
+input,textarea,select,button{font:inherit;padding:9px;border-radius:8px;border:1px solid #333;background:#000;color:#eee;width:100%}
+textarea{color:#eee;background:#000;min-height:80px}
+button{background:#22c55e;color:#000;font-weight:600;cursor:pointer;width:auto}
+button.sec{background:#222;color:#ddd}
+button.danger{background:#7f1d1d;color:#fecaca}
+.grid{display:grid;gap:10px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{padding:2px 8px;border-radius:999px;font-size:12px;background:#333}
+.badge.ok{background:#14532d;color:#bbf7d0}
+small{color:#888}
+.input-eye{position:relative;width:100%}
+.input-eye input{padding-right:38px}
+.input-eye span{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;opacity:.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="login" class="card">
+    <h2>Login</h2>
+    <div class="grid" style="max-width:360px">
+      <input id="email" type="email" placeholder="email">
+      <div class="input-eye">
+        <input id="senha" type="password" placeholder="senha">
+        <span id="olho">👁️</span>
+      </div>
+      <button id="entrar">Entrar</button>
+      <small id="erro" style="color:#f87171"></small>
+    </div>
+  </div>
+
+  <div id="painel" style="display:none">
+    <div class="card row" style="justify-content:space-between">
+      <h2 style="margin:0">Depoimentos</h2>
+      <div class="row">
+        <select id="filtro" style="width:auto">
+          <option value="todos">Todos</option>
+          <option value="pendentes">Pendentes</option>
+          <option value="aprovados">Aprovados</option>
+        </select>
+        <button id="sair" class="sec">Sair</button>
+      </div>
+    </div>
+    <div id="lista"></div>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+const supa = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+const $ = s => document.querySelector(s)
+const login = $('#login'), painel = $('#painel'), lista = $('#lista')
+
+$('#olho').onclick = ()=>{ const s=$('#senha'); s.type = s.type==='password'?'text':'password' }
+
+async function sessao(){
+  const { data:{session} } = await supa.auth.getSession()
+  if(!session){ login.style.display='block'; painel.style.display='none' }
+  else { login.style.display='none'; painel.style.display='block'; carregar() }
+}
+
+$('#entrar').onclick = async ()=>{
+  $('#erro').textContent=''
+  const { error } = await supa.auth.signInWithPassword({ email:$('#email').value.trim(), password:$('#senha').value })
+  if(error) $('#erro').textContent = error.message
+  else sessao()
+}
+$('#sair').onclick = async ()=>{ await supa.auth.signOut(); location.reload() }
+$('#filtro').onchange = carregar
+
+async function carregar(){
+  lista.innerHTML = 'Carregando...'
+  let q = supa.from('testimonials').select('*').order('created_at',{ascending:false})
+  const f = $('#filtro').value
+  if(f==='pendentes') q = q.eq('approved', false)
+  if(f==='aprovados') q = q.eq('approved', true)
+  const { data, error } = await q
+  if(error){ lista.textContent = error.message; return }
+  lista.innerHTML = data.map(d=>`
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div><strong>${d.name||'Anônimo'}</strong> <span class="badge ${d.approved?'ok':''}">${d.approved?'aprovado':'pendente'}</span></div>
+        <small>${new Date(d.created_at).toLocaleString('pt-BR')}</small>
+      </div>
+      <div class="grid" style="margin-top:10px">
+        <input id="n-${d.id}" value="${d.name||''}" placeholder="Nome">
+        <select id="r-${d.id}" style="width:auto">${[5,4,3,2,1].map(n=>`<option ${d.rating==n?'selected':''}>${n}</option>`).join('')}</select>
+        <textarea id="m-${d.id}">${d.message||''}</textarea>
+        <div class="row">
+          <button onclick="salvar('${d.id}')">Salvar</button>
+          <button class="sec" onclick="toggle('${d.id}',${!d.approved})">${d.approved?'Desaprovar':'Aprovar'}</button>
+          <button class="danger" onclick="apagar('${d.id}')">Excluir</button>
+        </div>
+      </div>
+    </div>
+  `).join('') || '<div class="card">Nenhum depoimento</div>'
+}
+
+window.salvar = async (id)=>{
+  const name = document.getElementById('n-'+id).value
+  const rating = Number(document.getElementById('r-'+id).value)
+  const message = document.getElementById('m-'+id).value
+  const { error } = await supa.from('testimonials').update({ name, rating, message }).eq('id', id)
+  if(error) alert(error.message); else { alert('Salvo!'); carregar() }
+}
+window.toggle = async (id,val)=>{
+  await supa.from('testimonials').update({ approved: val }).eq('id', id)
+  carregar()
+}
+window.apagar = async (id)=>{
+  if(!confirm('Excluir este depoimento?')) return
+  await supa.from('testimonials').delete().eq('id', id)
+  carregar()
+}
+
+sessao()
+</script>
+</body>
+</html>
