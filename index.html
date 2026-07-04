@@ -2,191 +2,55 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Deixe seu depoimento</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink:#1D2B36;
-    --paper:#FBF7EC;
-    --teal:#1B4B43;
-    --mustard:#E8A33D;
-    --coral:#E6604F;
-    --line: rgba(29,43,54,0.15);
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    min-height:100vh;
-    background: var(--teal);
-    background-image:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05) 0, transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04) 0, transparent 45%);
-    font-family:'Work Sans', sans-serif;
-    color: var(--ink);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:32px 16px;
-  }
-  .postcard{
-    width:100%;
-    max-width:560px;
-    background: var(--paper);
-    border-radius:6px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
-    position:relative;
-    overflow:hidden;
-    border:1px solid rgba(0,0,0,0.06);
-  }
-  .postcard::before{
-    content:"";
-    position:absolute;
-    inset:10px;
-    border:1.5px dashed rgba(29,43,54,0.18);
-    border-radius:3px;
-    pointer-events:none;
-  }
-  .stamp{
-    position:absolute;
-    top:22px;
-    right:26px;
-    width:64px;
-    height:78px;
-    background: var(--coral);
-    border-radius:2px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transform: rotate(4deg);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-  }
-  .stamp svg{ width:30px; height:30px; fill:var(--paper); }
-  .content{
-    position:relative;
-    padding:44px 40px 36px;
-  }
-  .eyebrow{
-    font-size:12px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color: var(--coral);
-    font-weight:600;
-    margin:0 0 10px;
-  }
-  h1{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:32px;
-    line-height:1.15;
-    margin:0 0 8px;
-    max-width:80%;
-  }
-  p.sub{
-    margin:0 0 28px;
-    color: rgba(29,43,54,0.65);
-    font-size:15px;
-    max-width:85%;
-  }
-  label{
-    display:block;
-    font-size:13px;
-    font-weight:600;
-    margin:18px 0 6px;
-    color: rgba(29,43,54,0.8);
-  }
-  input[type="text"], textarea{
-    width:100%;
-    border:none;
-    border-bottom: 1.5px solid var(--line);
-    background:transparent;
-    font-family:'Work Sans', sans-serif;
-    font-size:16px;
-    padding:8px 2px;
-    color: var(--ink);
-    resize:vertical;
-    transition: border-color .2s;
-  }
-  input[type="text"]:focus, textarea:focus{
-    outline:none;
-    border-bottom-color: var(--teal);
-  }
-  textarea{ min-height:110px; font-family:'Fraunces', serif; font-size:18px; line-height:1.5; }
-  .stars{
-    display:flex;
-    gap:6px;
-    margin-top:6px;
-  }
-  .stars button{
-    background:none; border:none; cursor:pointer; padding:2px;
-    font-size:26px; line-height:1; color: var(--line);
-    transition: color .15s, transform .15s;
-  }
-  .stars button.active{ color: var(--mustard); transform: scale(1.08); }
-  .submit-row{
-    margin-top:30px;
-    display:flex;
-    align-items:center;
-    gap:16px;
-  }
-  button.send{
-    background: var(--teal);
-    color: var(--paper);
-    border:none;
-    padding:13px 28px;
-    border-radius:999px;
-    font-family:'Work Sans', sans-serif;
-    font-weight:600;
-    font-size:15px;
-    cursor:pointer;
-    transition: background .2s, transform .15s;
-  }
-  button.send:hover{ background:#123832; }
-  button.send:disabled{ opacity:.5; cursor:default; }
-  .status{ font-size:14px; }
-  .status.ok{ color:#1B4B43; font-weight:600; }
-  .status.err{ color: var(--coral); font-weight:600; }
-  .thanks{
-    display:none;
-    text-align:center;
-    padding:20px 0 4px;
-  }
-  .thanks .mark{
-    width:52px;height:52px;border-radius:50%;
-    background: var(--teal); color:var(--paper);
-    display:flex;align-items:center;justify-content:center;
-    margin:0 auto 16px; font-size:26px;
-  }
-  .thanks h2{ font-family:'Fraunces',serif; font-size:24px; margin:0 0 8px; }
-  .thanks p{ color: rgba(29,43,54,0.65); margin:0; font-size:14px; }
-  @media (max-width:480px){
-    .content{ padding:34px 24px 28px; }
-    h1{ font-size:26px; max-width:100%; }
-    p.sub{ max-width:100%; }
-    .stamp{ width:52px; height:64px; top:18px; right:18px;}
-  }
+  :root{--ink:#1D2B36;--paper:#FBF7EC;--teal:#1B4B43;--mustard:#E8A33D;--coral:#E6604F;--line:rgba(29,43,54,0.15)}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:var(--teal);font-family:'Work Sans',sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;padding:32px 16px}
+  .postcard{width:100%;max-width:560px;background:var(--paper);border-radius:6px;box-shadow:0 24px 60px rgba(0,0,0,.35);position:relative;overflow:hidden}
+  .postcard::before{content:"";position:absolute;inset:10px;border:1.5px dashed rgba(29,43,54,.18);border-radius:3px;pointer-events:none}
+  .content{position:relative;padding:44px 40px 36px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin:0 0 10px}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:32px;margin:0 0 8px}
+  p.sub{margin:0 0 28px;color:rgba(29,43,54,.65);font-size:15px}
+  label{display:block;font-size:13px;font-weight:600;margin:18px 0 6px;color:rgba(29,43,54,.8)}
+  input,textarea{width:100%;border:none;border-bottom:1.5px solid var(--line);background:transparent;font-size:16px;padding:8px 2px;color:var(--ink)}
+  input:focus,textarea:focus{outline:none;border-bottom-color:var(--teal)}
+  textarea{min-height:110px;font-family:'Fraunces',serif;font-size:18px}
+  .stars{display:flex;gap:6px;margin-top:6px}
+  .stars button{background:none;border:none;cursor:pointer;font-size:26px;color:var(--line)}
+  .stars button.active{color:var(--mustard)}
+  .submit-row{margin-top:30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  button.send{background:var(--teal);color:var(--paper);border:none;padding:13px 28px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer}
+  button.send:disabled{opacity:.5}
+  .status{font-size:14px}
+  .status.ok{color:var(--teal);font-weight:600}
+  .status.err{color:var(--coral);font-weight:600}
+  .phone-check{font-size:12px;margin-top:4px}
+  .phone-check.ok{color:green}
+  .phone-check.bad{color:var(--coral)}
 </style>
 </head>
 <body>
-
 <div class="postcard">
-  <div class="stamp">
-    <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.6-8-11a5 5 0 0 1 8-3.9A5 5 0 0 1 20 10c0 6.4-8 11-8 11z"/></svg>
-  </div>
-
   <div class="content">
     <div id="formView">
       <p class="eyebrow">Conte sua experiência</p>
       <h1>O que você achou do nosso trabalho?</h1>
-      <p class="sub">Seu depoimento pode aparecer em nosso site e redes sociais. Leva menos de um minuto.</p>
-
+      <p class="sub">Só clientes podem comentar. Leva menos de um minuto.</p>
       <form id="testimonialForm">
         <label for="name">Seu nome</label>
-        <input type="text" id="name" required placeholder="Como devemos te chamar">
+        <input type="text" id="name" required>
 
-        <label for="role">Cargo ou empresa (opcional)</label>
-        <input type="text" id="role" placeholder="Ex: Diretora de Marketing, Loja X">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+
+        <label for="phone">Telefone (com DDD)</label>
+        <input type="tel" id="phone" required placeholder="47999999999">
+        <div id="phoneStatus" class="phone-check"></div>
 
         <label>Sua nota</label>
         <div class="stars" id="stars">
@@ -198,7 +62,7 @@
         </div>
 
         <label for="message">Seu depoimento</label>
-        <textarea id="message" required placeholder="Escreva livremente sobre sua experiência..."></textarea>
+        <textarea id="message" required></textarea>
 
         <div class="submit-row">
           <button type="submit" class="send" id="sendBtn">Enviar depoimento</button>
@@ -206,76 +70,72 @@
         </div>
       </form>
     </div>
-
-    <div class="thanks" id="thanksView">
-      <div class="mark">✓</div>
-      <h2>Obrigado pelo seu depoimento!</h2>
-      <p>Ele será revisado e, em breve, poderá aparecer em nosso site.</p>
+    <div id="thanksView" style="display:none;text-align:center">
+      <h2>Obrigado!</h2>
+      <p>Seu depoimento será revisado.</p>
     </div>
   </div>
 </div>
 
-<script src="config.js?v=6"></script>
+<script src="config.js?v=7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  let rating = 5; // já deixa 5 estrelas marcadas
-  const starButtons = document.querySelectorAll('#stars button');
-  function pintaEstrelas(){
-    starButtons.forEach(b => b.classList.toggle('active', parseInt(b.dataset.v,10) <= rating));
+let rating = 5;
+const stars = document.querySelectorAll('#stars button');
+function paint(){ stars.forEach(b=>b.classList.toggle('active', +b.dataset.v <= rating)); }
+paint();
+stars.forEach(b=>b.onclick=()=>{ rating=+b.dataset.v; paint(); });
+
+const phoneInput = document.getElementById('phone');
+const phoneStatus = document.getElementById('phoneStatus');
+let phoneOk = false;
+
+async function checkPhone(){
+  const raw = phoneInput.value.replace(/\D/g,'');
+  if(raw.length < 10){ phoneStatus.textContent=''; phoneOk=false; return; }
+  const { data } = await client.from('clients').select('phone').eq('phone', raw).maybeSingle();
+  if(data){
+    phoneStatus.textContent = '✓ Cliente verificado';
+    phoneStatus.className = 'phone-check ok';
+    phoneOk = true;
+  } else {
+    phoneStatus.textContent = '✗ Telefone não encontrado na base de clientes';
+    phoneStatus.className = 'phone-check bad';
+    phoneOk = false;
   }
-  pintaEstrelas();
-  starButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      rating = parseInt(btn.dataset.v, 10);
-      pintaEstrelas();
-    });
-  });
+}
+phoneInput.addEventListener('blur', checkPhone);
 
-  const form = document.getElementById('testimonialForm');
-  const sendBtn = document.getElementById('sendBtn');
-  const statusMsg = document.getElementById('statusMsg');
+document.getElementById('testimonialForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = phoneInput.value.replace(/\D/g,'');
+  const message = document.getElementById('message').value.trim();
+  const status = document.getElementById('statusMsg');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    statusMsg.textContent = '';
-    statusMsg.className = 'status';
+  // valida email simples
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if(!emailOk){ status.textContent='Email inválido'; status.className='status err'; return; }
+  if(!phoneOk){ await checkPhone(); if(!phoneOk){ status.textContent='Só clientes podem comentar'; status.className='status err'; return; } }
 
-    const name = document.getElementById('name').value.trim();
-    const role = document.getElementById('role').value.trim();
-    const message = document.getElementById('message').value.trim();
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true; btn.textContent='Enviando...';
 
-    if (!name || !message || !rating) {
-      statusMsg.textContent = 'Preencha nome, depoimento e nota.';
-      statusMsg.className = 'status err';
-      return;
-    }
+  const { error } = await client.from('testimonials').insert([{
+    name, email, phone, message, rating, approved:false
+  }]);
 
-    sendBtn.disabled = true;
-    sendBtn.textContent = 'Enviando...';
-
-    const { error } = await client.from('testimonials').insert([{
-      name,
-      role,          // <- era role_company, agora é role
-      message,       // <- coluna certa
-      rating,
-      approved: false
-    }]);
-
-    if (error) {
-      statusMsg.textContent = 'Não foi possível enviar. Tente novamente.';
-      statusMsg.className = 'status err';
-      sendBtn.disabled = false;
-      sendBtn.textContent = 'Enviar depoimento';
-      console.error(error);
-      return;
-    }
-
-    document.getElementById('formView').style.display = 'none';
-    document.getElementById('thanksView').style.display = 'block';
-  });
+  if(error){
+    status.textContent='Erro ao enviar'; status.className='status err';
+    btn.disabled=false; btn.textContent='Enviar depoimento';
+    console.error(error); return;
+  }
+  document.getElementById('formView').style.display='none';
+  document.getElementById('thanksView').style.display='block';
+});
 </script>
-
 </body>
 </html>
