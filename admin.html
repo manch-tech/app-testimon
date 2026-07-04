@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste Login Supabase</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+    background: radial-gradient(1200px 800px at 80% -20%, #1e293b 0%, #020617 55%, #000 100%);
+    color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid #1e293b;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.03);
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #22c55e, #3b82f6);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: #020617;
+    box-shadow: 0 6px 18px rgba(59,130,246,.3);
+  }
+  h1 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: .2px;
+  }
+  p.sub {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+  form {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  label {
+    font-size: 13px;
+    color: #cbd5e1;
+    display: block;
+    margin-bottom: 6px;
+  }
+  input {
+    width: 100%;
+    padding: 12px 14px;
+    background: #020617;
+    border: 1px solid #243244;
+    border-radius: 12px;
+    color: #e2e8f0;
+    font-size: 15px;
+    outline: none;
+    transition: border .15s, box-shadow .15s;
+  }
+  input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,.2);
+  }
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  button {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #1e293b;
+    background: #111b2e;
+    color: #e2e8f0;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .05s ease, background .15s, border .15s, opacity .15s;
+  }
+  button.primary {
+    background: linear-gradient(180deg, #22c55e, #16a34a);
+    border-color: #14532d;
+    color: #052e16;
+    text-shadow: 0 1px 0 rgba(255,255,255,.2);
+  }
+  button:hover { filter: brightness(1.05); }
+  button:active { transform: translateY(1px); }
+  button:disabled { opacity: .6; cursor: not-allowed; }
+
+  .status {
+    margin-top: 18px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #020617;
+    border: 1px dashed #233046;
+    font-size: 12px;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #334155;
+    box-shadow: 0 0 0 2px rgba(51,65,85,.3);
+  }
+  .dot.ok { background: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,.6); }
+  .dot.err { background: #ef4444; box-shadow: 0 0 10px rgba(239,68,68,.5); }
+
+  pre {
+    margin-top: 14px;
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 14px;
+    max-height: 260px;
+    overflow: auto;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #cbd5e1;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .foot {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 11px;
+    color: #64748b;
+  }
+  @media (max-width: 390px) {
+    .card { padding: 22px; border-radius: 16px; }
+    .actions { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="header">
+      <div class="logo">S</div>
+      <div>
+        <h1>Admin Login • Supabase</h1>
+        <p class="sub">Teste rápido de autenticação</p>
+      </div>
+    </div>
+
+    <form id="loginForm" autocomplete="on">
+      <div>
+        <label for="email">Email</label>
+        <input id="email" type="email" inputmode="email" placeholder="seu@email.com" required>
+      </div>
+      <div>
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" placeholder="••••••••" required>
+      </div>
+      <div class="actions">
+        <button id="loginBtn" class="primary" type="submit">Entrar</button>
+        <button id="testBtn" type="button" title="SELECT id FROM testimonials LIMIT 1">Testar conexão</button>
+      </div>
+    </form>
+
+    <div class="status" id="status">
+      <span class="dot" id="dot"></span>
+      <span id="statusText">Pronto para conectar.</span>
+    </div>
+
+    <pre id="output">{"aguardando": true}</pre>
+
+    <div class="foot">URL: lovwxccrxxahdxtychxy.supabase.co</div>
+  </main>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+  const SUPABASE_URL = "https://lovwxccrxxahdxtychxy.supabase.co"
+  const SUPABASE_ANON_KEY = "sb_publishable_HJ3-sMYvcOXXWJTtkz-7Rg_alxdTn6L"
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true }
+  })
+
+  const $ = (id) => document.getElementById(id)
+  const email = $('email')
+  const senha = $('senha')
+  const loginBtn = $('loginBtn')
+  const testBtn = $('testBtn')
+  const output = $('output')
+  const statusText = $('statusText')
+  const dot = $('dot')
+
+  function show(obj, ok = null) {
+    output.textContent = JSON.stringify(obj, null, 2)
+    if (ok === true) {
+      dot.className = 'dot ok'
+      statusText.textContent = 'Sucesso'
+    } else if (ok === false) {
+      dot.className = 'dot err'
+      statusText.textContent = 'Erro'
+    } else {
+      dot.className = 'dot'
+      statusText.textContent = 'Pronto'
+    }
+  }
+
+  async function login(e) {
+    e?.preventDefault()
+    loginBtn.disabled = true
+    testBtn.disabled = true
+    statusText.textContent = 'Autenticando...'
+    dot.className = 'dot'
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.value.trim(),
+        password: senha.value
+      })
+      show({ action: 'signInWithPassword', data, error }, !error)
+    } catch (err) {
+      show({ action: 'signInWithPassword', error: String(err) }, false)
+    } finally {
+      loginBtn.disabled = false
+      testBtn.disabled = false
+    }
+  }
+
+  async function testar() {
+    testBtn.disabled = true
+    loginBtn.disabled = true
+    statusText.textContent = 'Testando conexão...'
+    dot.className = 'dot'
+    try {
+      const { data, error, status, statusText: st } = await supabase
+        .from('testimonials')
+        .select('id')
+        .limit(1)
+      show({ action: 'select testimonials', status, statusText: st, data, error }, !error)
+    } catch (err) {
+      show({ action: 'select testimonials', error: String(err) }, false)
+    } finally {
+      testBtn.disabled = false
+      loginBtn.disabled = false
+    }
+  }
+
+  $('loginForm').addEventListener('submit', login)
+  testBtn.addEventListener('click', testar)
+
+  // Mostrar sessão atual se existir
+  supabase.auth.getSession().then(({ data }) => {
+    if (data?.session) {
+      show({ action: 'getSession', session: data.session }, true)
+    }
+  })
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;var a=target.closest?target.closest("a[href]"):null;if(!a||!a.href||!/^https?:\/\//.test(a.href))return;if(a.href.replace(/#.*$/,"")===loc)return;var productId=extractProductId(target)||extractProductId(a);if(!productId)return;e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*")},true)})();</script></body>
+</html>
