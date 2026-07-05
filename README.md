@@ -12,7 +12,6 @@ Sistema completo para coletar depoimentos de clientes, aprová-los antes de publ
 | `demo.html` | Exemplo de como o widget aparece em um site |
 | `supabase-setup.sql` | Comando para criar a tabela no banco de dados |
 | `config.js` | Onde você cola as chaves do seu projeto |
-| `whatsapp.html` | Ferramenta opcional para compartilhar o link do App Testimon afim de obter testemunhos |
 
 ---
 
