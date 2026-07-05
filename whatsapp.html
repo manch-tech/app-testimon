@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gerador WhatsApp</title><style>body{font-family:Inter;background:#1a3a5f;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px} .box{background:#fff;color:#0f243b;padding:30px;border-radius:20px;max-width:400px;width:100%} input,textarea{width:100%;padding:12px;margin:8px 0;border:2px solid #e2e8f0;border-radius:10px;font-size:16px} button{width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:10px;font-weight:600;margin-top:10px;cursor:pointer} a{display:block;text-align:center;margin-top:12px;color:#1a3a5f}</style></head><body>
+<div class="box">
+<h2>Gerador WhatsApp</h2>
+<input id="nome" placeholder="Nome do cliente">
+<input id="fone" placeholder="WhatsApp (47) 9...">
+<textarea id="msg">Oi! Aqui é o Manoel Pedra. Terminamos seu serviço! Pode deixar um depoimento rapidinho? 👉 https://manch-tech.github.io/app-testimon/</textarea>
+<button onclick="gerar()">Gerar link</button>
+<a id="link" target="_blank"></a>
+</div>
+<script>
+function gerar(){
+ const nome=document.getElementById('nome').value;
+ const fone=document.getElementById('fone').value.replace(/\D/g,'');
+ let msg=document.getElementById('msg').value.replace('Oi!',`Oi ${nome}!`);
+ const url=`https://wa.me/55${fone}?text=${encodeURIComponent(msg)}`;
+ const a=document.getElementById('link');
+ a.href=url; a.textContent='Abrir no WhatsApp'; a.style.display='block';
+}
+</script></body></html>
