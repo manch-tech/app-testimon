@@ -134,7 +134,9 @@ sessao()
 
 <script>
 if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('/app-testimon/sw.js', {scope: '/app-testimon/'});
+  window.addEventListener('load', () => {
+navigator.serviceWorker.register('/app-testimon/sw.js', { scope: '/app-testimon/' });
+  });
 }
 </script>
 
