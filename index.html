@@ -67,4 +67,11 @@ const supa = window.supabase.createClient('https://lovwxccrxxahdxtychxy.supabase
 const f=document.getElementById('f'),btn=document.getElementById('btn'),ok=document.getElementById('ok'),err=document.getElementById('err');
 f.addEventListener('submit',async e=>{e.preventDefault();btn.disabled=true;ok.style.display='none';err.style.display='none';const phone=document.getElementById('phone').value.replace(/\D/g,'');const name=document.getElementById('name').value.trim();const email=document.getElementById('email').value.trim();const message=document.getElementById('message').value.trim();const rating=parseInt(document.getElementById('rating').value);const {data:c}=await supa.from('clients').select('phone').eq('phone',phone).maybeSingle();if(!c){await supa.from('clients').insert([{phone,name,email}])}const {error}=await supa.from('testimonials').insert([{name,email,phone,message,rating,approved:false}]);if(error){err.textContent=error.message;err.style.display='block'}else{ok.style.display='block';f.reset()}btn.disabled=false});
 </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('/app-testimon/sw.js', {scope: '/app-testimon/'});
+}
+</script>
+
 </body></html>
