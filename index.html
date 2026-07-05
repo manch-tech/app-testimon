@@ -70,7 +70,9 @@ f.addEventListener('submit',async e=>{e.preventDefault();btn.disabled=true;ok.st
 
 <script>
 if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('/app-testimon/sw.js', {scope: '/app-testimon/'});
+  window.addEventListener('load', () => {
+navigator.serviceWorker.register('/app-testimon/sw.js', { scope: '/app-testimon/' });
+  });
 }
 </script>
 
