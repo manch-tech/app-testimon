@@ -1,141 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Deixe seu depoimento</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deixe seu Depoimento - Manoel Pedra</title>
 <style>
-  :root{--ink:#1D2B36;--paper:#FBF7EC;--teal:#1B4B43;--mustard:#E8A33D;--coral:#E6604F;--line:rgba(29,43,54,0.15)}
-  *{box-sizing:border-box}
-  body{margin:0;min-height:100vh;background:var(--teal);font-family:'Work Sans',sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;padding:32px 16px}
-  .postcard{width:100%;max-width:560px;background:var(--paper);border-radius:6px;box-shadow:0 24px 60px rgba(0,0,0,.35);position:relative;overflow:hidden}
-  .postcard::before{content:"";position:absolute;inset:10px;border:1.5px dashed rgba(29,43,54,.18);border-radius:3px;pointer-events:none}
-  .content{position:relative;padding:44px 40px 36px}
-  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:600;margin:0 0 10px}
-  h1{font-family:'Fraunces',serif;font-weight:600;font-size:32px;margin:0 0 8px}
-  p.sub{margin:0 0 28px;color:rgba(29,43,54,.65);font-size:15px}
-  label{display:block;font-size:13px;font-weight:600;margin:18px 0 6px;color:rgba(29,43,54,.8)}
-  input,textarea{width:100%;border:none;border-bottom:1.5px solid var(--line);background:transparent;font-size:16px;padding:8px 2px;color:var(--ink)}
-  input:focus,textarea:focus{outline:none;border-bottom-color:var(--teal)}
-  textarea{min-height:110px;font-family:'Fraunces',serif;font-size:18px}
-  .stars{display:flex;gap:6px;margin-top:6px}
-  .stars button{background:none;border:none;cursor:pointer;font-size:26px;color:var(--line)}
-  .stars button.active{color:var(--mustard)}
-  .submit-row{margin-top:30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-  button.send{background:var(--teal);color:var(--paper);border:none;padding:13px 28px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer}
-  button.send:disabled{opacity:.5}
-  .status{font-size:14px}
-  .status.ok{color:var(--teal);font-weight:600}
-  .status.err{color:var(--coral);font-weight:600}
-  .phone-check{font-size:12px;margin-top:4px}
-  .phone-check.ok{color:green}
-  .phone-check.bad{color:var(--coral)}
+body{font-family:system-ui;background:#f5f5f5;display:flex;justify-content:center;padding:20px}
+.card{background:#fff;max-width:480px;width:100%;padding:28px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+h1{margin:0 0 8px;color:#1a3a5f} p{color:#666;margin:0 0 20px}
+label{display:block;margin:12px 0 4px;font-weight:600}
+input,textarea,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:16px}
+button{margin-top:18px;width:100%;padding:14px;background:#1a3a5f;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer}
+button:disabled{opacity:.6}
+.msg{margin-top:12px;padding:10px;border-radius:6px;display:none}
+.ok{background:#e6f7ee;color:#0a5} .err{background:#fde8e8;color:#c00}
 </style>
 </head>
 <body>
-<div class="postcard">
-  <div class="content">
-    <div id="formView">
-      <p class="eyebrow">Conte sua experiência</p>
-      <h1>O que você achou do nosso trabalho?</h1>
-      <p class="sub">Só clientes podem comentar. Leva menos de um minuto.</p>
-      <form id="testimonialForm">
-        <label for="name">Seu nome</label>
-        <input type="text" id="name" required>
+<div class="card">
+<h1>Seu depoimento</h1>
+<p>Só clientes cadastrados podem enviar.</p>
+<form id="f">
+<label>Telefone cadastrado</label>
+<input id="phone" placeholder="(47) 99999-9999" required>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" required>
+<label>Seu nome</label>
+<input id="name" placeholder="Manoel Pedra" required>
 
-        <label for="phone">Telefone (com DDD)</label>
-        <input type="tel" id="phone" required placeholder="47999999999">
-        <div id="phoneStatus" class="phone-check"></div>
+<label>Seu email</label>
+<input id="email" type="email" placeholder="voce@email.com" required>
 
-        <label>Sua nota</label>
-        <div class="stars" id="stars">
-          <button type="button" data-v="1">★</button>
-          <button type="button" data-v="2">★</button>
-          <button type="button" data-v="3">★</button>
-          <button type="button" data-v="4">★</button>
-          <button type="button" data-v="5">★</button>
-        </div>
+<label>Depoimento</label>
+<textarea id="message" rows="4" required></textarea>
 
-        <label for="message">Seu depoimento</label>
-        <textarea id="message" required></textarea>
+<label>Nota</label>
+<select id="rating"><option>5 - Excelente</option><option>4</option><option>3</option><option>2</option><option>1</option></select>
 
-        <div class="submit-row">
-          <button type="submit" class="send" id="sendBtn">Enviar depoimento</button>
-          <span class="status" id="statusMsg"></span>
-        </div>
-      </form>
-    </div>
-    <div id="thanksView" style="display:none;text-align:center">
-      <h2>Obrigado!</h2>
-      <p>Seu depoimento será revisado.</p>
-    </div>
-  </div>
+<button id="btn">Enviar</button>
+<div id="ok" class="msg ok">Obrigado! Enviado para aprovação.</div>
+<div id="err" class="msg err"></div>
+</form>
 </div>
 
-<script src="config.js?v=7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supa = window.supabase.createClient(
+  'https://lovwxccrxxahdxtychxy.supabase.co',
+  'SUA_ANON_KEY_AQUI'
+);
+const f=document.getElementById('f'), btn=document.getElementById('btn');
+f.addEventListener('submit', async e=>{
+  e.preventDefault(); btn.disabled=true;
+  const phone=document.getElementById('phone').value.replace(/\D/g,'');
+  const name=document.getElementById('name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const message=document.getElementById('message').value.trim();
+  const rating=parseInt(document.getElementById('rating').value);
 
-let rating = 5;
-const stars = document.querySelectorAll('#stars button');
-function paint(){ stars.forEach(b=>b.classList.toggle('active', +b.dataset.v <= rating)); }
-paint();
-stars.forEach(b=>b.onclick=()=>{ rating=+b.dataset.v; paint(); });
+  const {data:c}=await supa.from('clients').select('phone').eq('phone',phone).maybeSingle();
+  if(!c){showErr('Telefone não encontrado');btn.disabled=false;return}
 
-const phoneInput = document.getElementById('phone');
-const phoneStatus = document.getElementById('phoneStatus');
-let phoneOk = false;
-
-async function checkPhone(){
-  const raw = phoneInput.value.replace(/\D/g,'');
-  if(raw.length < 10){ phoneStatus.textContent=''; phoneOk=false; return; }
-  const { data } = await client.from('clients').select('phone').eq('phone', raw).maybeSingle();
-  if(data){
-    phoneStatus.textContent = '✓ Cliente verificado';
-    phoneStatus.className = 'phone-check ok';
-    phoneOk = true;
-  } else {
-    phoneStatus.textContent = '✗ Telefone não encontrado na base de clientes';
-    phoneStatus.className = 'phone-check bad';
-    phoneOk = false;
-  }
-}
-phoneInput.addEventListener('blur', checkPhone);
-
-document.getElementById('testimonialForm').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const phone = phoneInput.value.replace(/\D/g,'');
-  const message = document.getElementById('message').value.trim();
-  const status = document.getElementById('statusMsg');
-
-  // valida email simples
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  if(!emailOk){ status.textContent='Email inválido'; status.className='status err'; return; }
-  if(!phoneOk){ await checkPhone(); if(!phoneOk){ status.textContent='Só clientes podem comentar'; status.className='status err'; return; } }
-
-  const btn = document.getElementById('sendBtn');
-  btn.disabled = true; btn.textContent='Enviando...';
-
-  const { error } = await client.from('testimonials').insert([{
-    name, email, phone, message, rating, approved:false
-  }]);
-
-  if(error){
-    status.textContent='Erro ao enviar'; status.className='status err';
-    btn.disabled=false; btn.textContent='Enviar depoimento';
-    console.error(error); return;
-  }
-  document.getElementById('formView').style.display='none';
-  document.getElementById('thanksView').style.display='block';
+  const {error}=await supa.from('testimonials').insert([{name,email,phone,message,rating,approved:false}]);
+  if(error){showErr(error.message)} else {document.getElementById('ok').style.display='block';f.reset()}
+  btn.disabled=false;
 });
+function showErr(m){const e=document.getElementById('err');e.textContent=m;e.style.display='block'}
 </script>
-</body>
-</html>
+</body></html>
