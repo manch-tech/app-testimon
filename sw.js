@@ -1,6 +1,6 @@
 // App Testimon - Service Worker
 const GHPATH = '/app-testimon';
-const CACHE_NAME = 'testemunhos-v1';
+const CACHE_NAME = 'testimon-v1_5';
 const URLS_TO_CACHE = [
   `${GHPATH}/`,
   `${GHPATH}/index.html`,
