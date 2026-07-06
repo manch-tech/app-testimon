@@ -1,11 +1,11 @@
-// App Testemunhos - Service Worker
+// App Testimon - Service Worker
 const GHPATH = '/app-testimon';
 const CACHE_NAME = 'testemunhos-v1';
 const URLS_TO_CACHE = [
   `${GHPATH}/`,
   `${GHPATH}/index.html`,
   `${GHPATH}/admin.html`,
-  `${GHPATH}/manifest.webmanifest`
+  `${GHPATH}/manifest.json`
 ];
 
 self.addEventListener('install', event => {
