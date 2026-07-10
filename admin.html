@@ -73,7 +73,11 @@ $('#entrar').onclick = async ()=>{
   $('#erro').textContent=''
   const token = document.querySelector('[name="cf-turnstile-response"]')?.value
   if(!token){ $('#erro').textContent='Confirme que você não é um robô.'; return }
-  const { error } = await supa.auth.signInWithPassword({ email:$('#email').value.trim(), password:$('#senha').value })
+  const { error } = await supa.auth.signInWithPassword({
+  email: $('#email').value.trim(),
+  password: $('#senha').value,
+  options: { captchaToken: token }
+})
   if(error){ $('#erro').textContent = error.message; turnstile.reset() }
   else sessao()
 }
