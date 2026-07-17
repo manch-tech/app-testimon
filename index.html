@@ -1,44 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head><!-- PLAYABLE_TOUCH_PATCH_V1 --><script>
-(function() {
-  if (window.__playableTouchPatchInstalled) return;
-  window.__playableTouchPatchInstalled = true;
-  var origAdd = EventTarget.prototype.addEventListener;
-  var blockedTypes = { touchstart: 1, touchmove: 1, wheel: 1 };
-  EventTarget.prototype.addEventListener = function(type, listener, options) {
-    if (blockedTypes[type]) {
-      if (options === undefined || options === null) {
-        options = { passive: true };
-      } else if (typeof options === 'boolean') {
-        options = { capture: options, passive: true };
-      } else {
-        options = Object.assign({}, options, { passive: true });
-      }
-    }
-    return origAdd.call(this, type, listener, options);
-  };
-})();
-</script><script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manoel Pedra - Depoimento</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:#ffffff !important}
-body{background:#ffffff !important;height:auto !important;min-height:auto !important;display:block !important;padding:0 !important;margin:0 !important;font-family:'Montserrat',sans-serif}
-.wrap{width:100%;max-width:500px;margin:0 auto;padding:8px 16px 20px 16px !important;background:#ffffff !important}
-h1{font-size:18px;color:#1e3a5f;text-align:center;font-weight:600;margin:0 0 4px 0 !important;padding:0 !important}
-.sub{font-size:12px;color:#6b7280;text-align:center;margin-bottom:12px !important}
-label{font-size:11px;font-weight:600;color:#111827;margin-bottom:4px !important;display:flex;align-items:center;gap:4px}
-input,select,textarea{width:100%;border:1px solid #e5e7eb;border-radius:8px;padding:11px 12px;font-size:13px;font-family:'Montserrat',sans-serif;background:#ffffff !important;color:#111827 !important;outline:none;-webkit-appearance:none;appearance:none}
-input:focus,select:focus,textarea:focus{border-color:#1e3a5f}
-textarea{height:82px;min-height:82px;resize:vertical;line-height:1.4}
-.field{margin-bottom:10px !important}
-select{background:#f9fafb !important}
-.btn-cloudflare{margin:12px 0;display:flex;justify-content:center}
-.btn-submit{width:100%;background:#1e365d;color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:600;font-family:'Montserrat',sans-serif;cursor:pointer;margin-top:6px}
+html,body{background:#fff !important;height:auto !important;min-height:0 !important;display:block !important;margin:0 !important;padding:0 !important;font-family:'Montserrat',sans-serif
+}
+.wrap{width:100%;max-width:500px;margin:0 auto;padding:24px 18px 16px 18px !important;background:#fff !important
+}
+h1{font-size:24px !important;color:#1e3a5f !important;text-align:center;font-weight:600 !important;margin:0 0 6px 0 !important;padding:0 !important;line-height:1.2 !important
+}
+.sub{font-size:14px !important;color:#6b7280 !important;text-align:center;margin-bottom:18px !important
+}
+label{font-size:14px !important;font-weight:600 !important;color:#111827 !important;margin-bottom:5px !important;display:flex;gap:4px
+}
+input,select,textarea{width:100%;border:1px solid #d1d5db !important;border-radius:10px !important;padding:12px 14px !important;font-size:15px !important;background:#fff !important;color:#111827 !important;outline:none;font-family:'Montserrat',sans-serif
+}
+textarea{height:95px !important;min-height:90px !important;resize:vertical
+}
+.field{margin-bottom:14px !important
+}
+.btn-submit{width:100%;background:#1e365d;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px
+}
 </style>
 </head>
 <body>
@@ -48,9 +35,9 @@ select{background:#f9fafb !important}
 <div class="field"><label>📱 Telefone cadastrado</label><input type="tel" placeholder="(47) 9 9999-9999"></div>
 <div class="field"><label>👤 Seu nome</label><input type="text" placeholder="Nome completo"></div>
 <div class="field"><label>✉️ Email</label><input type="email" placeholder="seu@email.com"></div>
-<div class="field"><label>💬 Depoimento</label><textarea placeholder="Como foi trabalhar com a gente?"></textarea></div>
-<div class="field"><label>⭐ Sua nota</label><select><option>★★★★★ Excelente</option><option>★★★★ Muito bom</option><option>★★★ Bom</option><option>★★ Regular</option><option>★ Ruim</option></select></div>
-<div class="btn-cloudflare"><div style="border:1px solid #e5e7eb;border-radius:4px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:11px;background:#fff"><span style="width:20px;height:20px;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff">✓</span> Sucesso! <span style="margin-left:20px;font-size:8px">☁️ CLOUDFLARE<br>Privacidade • Ajuda</span></div></div>
+<div class="field"><label>💬 Depoimento</label><textarea placeholder="O que achou do serviço e do atendimento?"></textarea></div>
+<div class="field"><label>⭐ Sua nota</label><select><option>★★★★★ Excelente</option></select></div>
+<div style="display:flex;justify-content:center;margin:10px 0"><div style="border:1px solid #e5e7eb;padding:8px 12px;border-radius:4px;font-size:12px">✓ Sucesso! Cloudflare</div></div>
 <button class="btn-submit">Enviar depoimento</button>
 </div>
 </body>
