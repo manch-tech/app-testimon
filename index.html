@@ -5,40 +5,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manoel Pedra - Depoimento</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#fff !important;height:auto !important;min-height:0 !important;display:block !important;margin:0 !important;padding:0 !important;font-family:'Montserrat',sans-serif
-}
-.wrap{width:100%;max-width:500px;margin:0 auto;padding:24px 18px 16px 18px !important;background:#fff !important
-}
-h1{font-size:24px !important;color:#1e3a5f !important;text-align:center;font-weight:600 !important;margin:0 0 6px 0 !important;padding:0 !important;line-height:1.2 !important
-}
-.sub{font-size:14px !important;color:#6b7280 !important;text-align:center;margin-bottom:18px !important
-}
-label{font-size:14px !important;font-weight:600 !important;color:#111827 !important;margin-bottom:5px !important;display:flex;gap:4px
-}
-input,select,textarea{width:100%;border:1px solid #d1d5db !important;border-radius:10px !important;padding:12px 14px !important;font-size:15px !important;background:#fff !important;color:#111827 !important;outline:none;font-family:'Montserrat',sans-serif
-}
-textarea{height:95px !important;min-height:90px !important;resize:vertical
-}
-.field{margin-bottom:14px !important
-}
-.btn-submit{width:100%;background:#1e365d;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px
-}
+html,body{background:#fff !important;height:auto !important;min-height:0 !important;display:block !important;margin:0 !important;padding:0 !important;font-family:'Montserrat',sans-serif}
+.wrap{width:100%;max-width:500px;margin:0 auto;padding:24px 18px 16px 18px !important;background:#fff !important}
+h1{font-size:24px !important;color:#1e3a5f !important;text-align:center;font-weight:600 !important;margin:0 0 6px 0 !important;padding:0 !important;line-height:1.2 !important}
+.sub{font-size:14px !important;color:#6b7280 !important;text-align:center;margin-bottom:18px !important}
+label{font-size:14px !important;font-weight:600 !important;color:#111827 !important;margin-bottom:5px !important;display:flex;gap:4px}
+input,select,textarea{width:100%;border:1px solid #d1d5db !important;border-radius:10px !important;padding:12px 14px !important;font-size:15px !important;background:#fff !important;color:#111827 !important;outline:none;font-family:'Montserrat',sans-serif}
+textarea{height:95px !important;min-height:90px !important;resize:vertical}
+.field{margin-bottom:14px !important}
+.btn-submit{width:100%;background:#1e365d;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
+.cf-wrap{display:flex;justify-content:center;margin:12px 0}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>Conte sua experiência</h1>
 <p class="sub">Seu depoimento ajuda melhorar o atendimento</p>
-<div class="field"><label>📱 Telefone cadastrado</label><input type="tel" placeholder="(47) 9 9999-9999"></div>
-<div class="field"><label>👤 Seu nome</label><input type="text" placeholder="Nome completo"></div>
-<div class="field"><label>✉️ Email</label><input type="email" placeholder="seu@email.com"></div>
-<div class="field"><label>💬 Depoimento</label><textarea placeholder="O que achou do serviço e do atendimento?"></textarea></div>
-<div class="field"><label>⭐ Sua nota</label><select><option>★★★★★ Excelente</option></select></div>
-<div style="display:flex;justify-content:center;margin:10px 0"><div style="border:1px solid #e5e7eb;padding:8px 12px;border-radius:4px;font-size:12px">✓ Sucesso! Cloudflare</div></div>
-<button class="btn-submit">Enviar depoimento</button>
+
+<form id="formDepo">
+<div class="field"><label>📱 Telefone cadastrado</label><input id="tel" type="tel" placeholder="(47) 9 9999-9999" required></div>
+<div class="field"><label>👤 Seu nome</label><input id="nome" type="text" placeholder="Nome completo" required></div>
+<div class="field"><label>✉️ Email</label><input id="email" type="email" placeholder="seu@email.com" required></div>
+<div class="field"><label>💬 Depoimento</label><textarea id="msg" placeholder="O que achou do serviço e do atendimento?" required></textarea></div>
+<div class="field"><label>⭐ Sua nota</label>
+<select id="nota" required>
+<option value="5">★★★★★ Excelente</option>
+<option value="4">★★★★ Muito bom</option>
+<option value="3">★★★ Bom</option>
+<option value="2">★★ Regular</option>
+<option value="1">★ Ruim</option>
+</select>
 </div>
+
+<div class="cf-wrap">
+<div class="cf-turnstile" data-sitekey="0x4AAAAAAA...SEU_SITEKEY_AQUI" data-callback="onCaptchaOk"></div>
+</div>
+
+<button type="submit" class="btn-submit">Enviar depoimento</button>
+</form>
+</div>
+
+<script>
+let captchaOk = false;
+function onCaptchaOk(token){ captchaOk = true; }
+document.getElementById('formDepo').addEventListener('submit', function(e){
+ e.preventDefault();
+ if(!captchaOk){ alert('Confirme o captcha para enviar'); return; }
+ // COLOQUE AQUI SEU CODIGO DE ENVIO ORIGINAL (fetch pro Sheet / API)
+ console.log('enviando', {
+   tel: document.getElementById('tel').value,
+   nome: document.getElementById('nome').value,
+   email: document.getElementById('email').value,
+   msg: document.getElementById('msg').value,
+   nota: document.getElementById('nota').value
+ });
+ alert('Obrigado! Recebemos seu depoimento.');
+});
+</script>
 </body>
 </html>
