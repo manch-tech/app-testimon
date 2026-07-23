@@ -48,7 +48,7 @@ const SUPABASE_ANON_KEY = "sua-chave-aqui";
 git init
 git add .
 git commit -m "primeiro commit"
-git remote add origin https://github.com/SEU-USUARIO/testimonial-app.git
+git remote add origin https://github.com/SEU-USUARIO/app-testimon.git
 git branch -M main
 git push -u origin main
 ```
@@ -56,8 +56,8 @@ git push -u origin main
 Depois, no repositório no GitHub: **Settings → Pages → Branch: main → Save**.
 
 Em alguns minutos seu app estará em:
-- Formulário para clientes: `https://SEU-USUARIO.github.io/testimonial-app/`
-- Painel de aprovação: `https://SEU-USUARIO.github.io/testimonial-app/admin.html`
+- Formulário para clientes: `https://SEU-USUARIO.github.io/app-testimon/`
+- Painel de aprovação: `https://SEU-USUARIO.github.io/app-testimon/admin.html`
 
 Envie o link do formulário para seus clientes, e use o link do painel (com login) para aprovar os depoimentos.
 
